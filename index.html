@@ -12,9 +12,9 @@
     <meta name="format-detection" content="telephone=no" />
     <meta
       name="description"
-      content="Sistema privado de inventario de ropa con Google Sheets y lector de códigos."
+      content="Sistema privado de inventario de ropa con costos, imágenes y lector de códigos."
     />
-    <title>StockFlow — Inventario de Ropa</title>
+    <title>StockFlow — Local de Ropa</title>
 
     <script>
       (() => {
@@ -37,7 +37,7 @@
           id: startUrl,
           name: "StockFlow — Inventario de ropa",
           short_name: "StockFlow",
-          description: "Control privado de stock con variante de talles.",
+          description: "Control privado de stock con imágenes, costo y variantes.",
           lang: "es-AR",
           start_url: startUrl,
           scope: scopeUrl,
@@ -184,12 +184,16 @@
       .stat { padding: 16px; display: grid; gap: 12px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
       .stat header { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: var(--muted); font-size: 13px; font-weight: 600; }
       .stat-icon { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 10px; background: var(--surface-2); color: var(--ink); }
-      .stat strong { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
+      .stat strong { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
 
       .dashboard-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
       .list { display: grid; }
       .list-row { min-height: 64px; padding: 12px 20px; display: flex; align-items: center; gap: 12px; border-top: 1px solid var(--line); }
-      .avatar { width: 40px; height: 40px; flex: none; display: grid; place-items: center; border-radius: 12px; background: var(--surface-2); color: var(--ink-2); font-size: 13px; font-weight: 700; }
+
+      /* Imágen / Avatar del producto */
+      .product-thumb { width: 44px; height: 44px; flex: none; border-radius: 10px; object-fit: cover; background: var(--surface-2); border: 1px solid var(--line); }
+      .avatar-placeholder { width: 44px; height: 44px; flex: none; display: grid; place-items: center; border-radius: 10px; background: var(--surface-2); color: var(--ink-2); font-size: 13px; font-weight: 700; border: 1px solid var(--line); }
+
       .row-main { min-width: 0; flex: 1; display: grid; }
       .row-main strong { overflow: hidden; font-size: 14px; text-overflow: ellipsis; white-space: nowrap; }
       .row-main small { color: var(--muted); font-size: 13px; }
@@ -447,10 +451,12 @@
               <table>
                 <thead>
                   <tr>
+                    <th>Foto</th>
                     <th>Prenda</th>
                     <th>Código</th>
                     <th>Categoría</th>
                     <th>Talle</th>
+                    <th>Costo</th>
                     <th>Precio</th>
                     <th>Stock</th>
                     <th>Estado</th>
@@ -600,8 +606,18 @@
           </label>
 
           <label class="field">
-            <span>Precio de venta</span>
+            <span>Costo ($)</span>
+            <input name="costo" type="number" inputmode="decimal" min="0" step="0.01" value="0" />
+          </label>
+
+          <label class="field">
+            <span>Precio de venta ($)</span>
             <input name="precio" type="number" inputmode="decimal" min="0" step="0.01" value="0" />
+          </label>
+
+          <label class="field wide">
+            <span>URL de la imagen (opcional)</span>
+            <input name="imagen" type="url" placeholder="https://ejemplo.com/foto-remera.jpg" />
           </label>
 
           <label class="field">
@@ -805,11 +821,6 @@
       let cameraStream = null, detector = null, scanFrame = null, scanCallback = null, portableScannerInstance = null;
       let portableScannerStarted = false, scannerLibraryPromise = null, scanSession = 0, scanFinishing = false;
 
-      const SCANNER_LIBRARY_URLS = [
-        "https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js",
-        "https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"
-      ];
-
       function escapeHtml(val) { return String(val ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;"); }
       function icon(name, size = "") { return `<svg class="i ${size}" aria-hidden="true"><use href="#i-${name}"/></svg>`; }
       function number(val, fb = 0) { const p = Number(val); return Number.isFinite(p) ? p : fb; }
@@ -834,6 +845,13 @@
         if (stock <= 0) return { label: "Sin stock", className: "out" };
         if (min > 0 && stock <= min) return { label: "Stock bajo", className: "low" };
         return { label: "Disponible", className: "ok" };
+      }
+
+      function renderImage(url, altName) {
+        if (url && url.startsWith("http")) {
+          return `<img src="${escapeHtml(url)}" alt="${escapeHtml(altName)}" class="product-thumb" loading="lazy" onerror="this.outerHTML='<span class=\\'avatar-placeholder\\'>${escapeHtml(initials(altName))}</span>'" />`;
+        }
+        return `<span class="avatar-placeholder">${escapeHtml(initials(altName))}</span>`;
       }
 
       function showToast(msg, type = "success") {
@@ -954,7 +972,7 @@
         const lowStock = state.data.lowStock || [];
         elements.lowStockList.innerHTML = lowStock.length ? lowStock.slice(0, 5).map(p => `
           <div class="list-row">
-            <span class="avatar">${escapeHtml(initials(p.nombre))}</span>
+            ${renderImage(p.imagen, p.nombre)}
             <span class="row-main">
               <strong>${escapeHtml(p.nombre)} ${p.talle ? `(${p.talle})` : ""}</strong>
               <small>Mínimo: ${number(p.stockMinimo)} u.</small>
@@ -994,9 +1012,9 @@
           const status = stockStatus(p);
           return `
             <tr>
+              <td>${renderImage(p.imagen, p.nombre)}</td>
               <td>
                 <div class="product-cell">
-                  <span class="avatar">${escapeHtml(initials(p.nombre))}</span>
                   <div>
                     <strong>${escapeHtml(p.nombre)}</strong>
                     <small>Act: ${dateText(p.actualizado)}</small>
@@ -1006,20 +1024,21 @@
               <td><span class="code">${escapeHtml(p.codigo)}</span></td>
               <td>${escapeHtml(p.categoria || "—")}</td>
               <td>${p.talle ? `<span class="badge-talle">${escapeHtml(p.talle)}</span>` : "—"}</td>
-              <td class="num">${money(p.precio)}</td>
+              <td class="num">${money(p.costo)}</td>
+              <td class="num"><strong>${money(p.precio)}</strong></td>
               <td class="num"><strong>${number(p.stock)}</strong> / mín. ${number(p.stockMinimo)}</td>
               <td><span class="pill ${status.className}">${status.label}</span></td>
               <td>${editBtn(p)}</td>
             </tr>
           `;
-        }).join("") : `<tr><td colspan="8">${emptyState("box", "Sin prendas para mostrar.")}</td></tr>`;
+        }).join("") : `<tr><td colspan="10">${emptyState("box", "Sin prendas para mostrar.")}</td></tr>`;
 
         elements.productsMobile.innerHTML = products.length ? products.map(p => {
           const status = stockStatus(p);
           return `
             <article class="mobile-card">
               <header>
-                <span class="avatar">${escapeHtml(initials(p.nombre))}</span>
+                ${renderImage(p.imagen, p.nombre)}
                 <span class="row-main">
                   <strong>${escapeHtml(p.nombre)} ${p.talle ? `(${p.talle})` : ""}</strong>
                   <small>${escapeHtml(p.codigo)} · ${escapeHtml(p.categoria || "—")}</small>
@@ -1027,9 +1046,9 @@
                 ${editBtn(p)}
               </header>
               <div class="mobile-meta">
-                <span class="num">${money(p.precio)}</span>
-                <strong class="num">${number(p.stock)} u.</strong>
-                <span class="pill ${status.className}">${status.label}</span>
+                <span>Costo: <strong class="num">${money(p.costo)}</strong></span>
+                <span>Venta: <strong class="num">${money(p.precio)}</strong></span>
+                <span class="pill ${status.className}">${status.label} (${number(p.stock)} u.)</span>
               </div>
             </article>
           `;
@@ -1079,7 +1098,7 @@
         elements.suppliersGrid.innerHTML = state.data.suppliers.length ? state.data.suppliers.map(s => `
           <article class="supplier-card">
             <header>
-              <span class="avatar">${escapeHtml(initials(s.nombre))}</span>
+              <span class="avatar-placeholder">${escapeHtml(initials(s.nombre))}</span>
               <button class="icon-button" data-edit-supplier="${escapeHtml(s.id)}">${icon("edit")}</button>
             </header>
             <h3>${escapeHtml(s.nombre)}</h3>
@@ -1099,6 +1118,24 @@
             <span class="bar-value">${number(i.cantidad)}</span>
           </div>
         `).join("") : emptyState("chart", "Registrá ventas para generar métricas.");
+
+        const totalCostVal = state.data.products.reduce((acc, p) => acc + (number(p.costo) * number(p.stock)), 0);
+        const totalSellVal = state.data.products.reduce((acc, p) => acc + (number(p.precio) * number(p.stock)), 0);
+
+        elements.insights.innerHTML = `
+          <div class="insight">
+            <p class="eyebrow">Inversión en Stock (Costo)</p>
+            <h3>${money(totalCostVal)}</h3>
+          </div>
+          <div class="insight" style="margin-top:12px;">
+            <p class="eyebrow">Valorización a Precio de Venta</p>
+            <h3>${money(totalSellVal)}</h3>
+          </div>
+          <div class="insight" style="margin-top:12px;">
+            <p class="eyebrow">Ganancia Potencial Estimada</p>
+            <h3>${money(totalSellVal - totalCostVal)}</h3>
+          </div>
+        `;
       }
 
       function renderSelects() {
@@ -1221,7 +1258,6 @@
         }
       }
 
-      /* Lector de cámara */
       async function openScanner(cb) {
         scanCallback = cb;
         elements.scannerDialog.showModal();
@@ -1244,7 +1280,6 @@
         }
       }
 
-      /* Event listeners */
       $$("[data-route]").forEach(b => b.addEventListener("click", () => routeTo(b.dataset.route)));
       $$("[data-go]").forEach(b => b.addEventListener("click", () => routeTo(b.dataset.go)));       $$
 ("[data-scan]").forEach(b => b.addEventListener("click", () => openScanner(scannedMain)));
@@ -1297,7 +1332,7 @@
           elements.productForm,
           elements.productDialog,
           "saveProduct",
-          { product: { ...v, precio: number(v.precio), stock: number(v.stock), stockMinimo: number(v.stockMinimo), usuario: state.session.user } },
+          { product: { ...v, precio: number(v.precio), costo: number(v.costo), stock: number(v.stock), stockMinimo: number(v.stockMinimo), usuario: state.session.user } },
           v.id ? "Prenda actualizada." : "Prenda agregada."
         );
       });
