@@ -18,7 +18,7 @@
 
     <script>
       (() => {
-        const icon192 = "data:image/png;base64,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";
+        const icon192 = "data:image/png;base64,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";
         const startUrl = location.href.split("#")[0].split("?")[0];
         const scopeUrl = new URL(".", startUrl).href;
 
@@ -303,7 +303,7 @@
     <svg width="0" height="0" style="position: absolute" aria-hidden="true" focusable="false">
       <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Z" /><path d="m3 13 9 5 9-5" /></symbol>
       <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5" /><path d="M5 9.5V21h14V9.5" /><path d="M10 21v-6h4v6" /></symbol>
-      <symbol id="i-box" viewBox="0 0 24 24"><path d="M21 8 12 3 3 8l9 5 9-5Z" /><path d="M3 8v8l9 5 9-5V8" /><path d="M12 13v8" /></symbol>
+      <symbol id="i-box" viewBox="0 0 24 24"><path d="M21 8 12 3 3 8l9 5 9-5V8" /><path d="M12 13v8" /></symbol>
       <symbol id="i-swap" viewBox="0 0 24 24"><path d="m7 4-4 4 4 4" /><path d="M3 8h14" /><path d="m17 20 4-4-4-4" /><path d="M21 16H7" /></symbol>
       <symbol id="i-truck" viewBox="0 0 24 24"><path d="M2 6h11v10H2z" /><path d="M13 9h4l4 4v3h-8" /><circle cx="7" cy="18" r="2" /><circle cx="17" cy="18" r="2" /></symbol>
       <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V4" /><path d="M4 20h16" /><path d="M8 16v-5" /><path d="M13 16V8" /><path d="M18 16v-3" /></symbol>
@@ -328,8 +328,8 @@
           <svg class="i lg"><use href="#i-layers" /></svg>
         </span>
         <span class="brand-copy">
-          <strong id="brand-title">StockFlow</strong>
-          <small id="business-name">Local de Ropa</small>
+          <strong id="brand-title">SALOME</strong>
+          <small id="business-name">CRM</small>
         </span>
       </div>
 
@@ -366,7 +366,7 @@
       <header class="mobile-header">
         <div class="brand">
           <span class="brand-mark" id="brand-logo-mobile"><svg class="i"><use href="#i-layers" /></svg></span>
-          <span class="brand-copy"><strong id="brand-title-mobile">StockFlow</strong></span>
+          <span class="brand-copy"><strong id="brand-title-mobile">SALOME</strong></span>
         </div>
         <div class="mobile-actions">
           <div class="conn" data-state="idle">
@@ -787,7 +787,7 @@
       const emptyData = () => ({
         products: [], suppliers: [], movements: [], lowStock: [],
         summary: { productCount: 0, totalUnits: 0, lowStockCount: 0, monthlyOutputs: 0 },
-        topSelling: [], settings: { businessName: "Mi local de ropa", businessLogo: "", currency: "ARS" }
+        topSelling: [], settings: { businessName: "SALOME", businessLogo: "", currency: "ARS" }
       });
 
       const state = {
@@ -858,13 +858,14 @@
       }
 
       function renderBranding() {
-        const name = state.data.settings?.businessName || "Mi local de ropa";
+        const name = state.data.settings?.businessName || "SALOME";
         const logo = state.data.settings?.businessLogo || "";
 
-        elements.businessName.textContent = name;
+        // Mantiene la parte pequeña fija como "CRM"
+        elements.businessName.textContent = "CRM";
         elements.brandTitle.textContent = name;
         if (elements.brandTitleMobile) elements.brandTitleMobile.textContent = name;
-        document.title = name + " — StockFlow";
+        document.title = name + " — CRM";
 
         if (logo && logo.startsWith("http")) {
           const imgMarkup = `<img src="${escapeHtml(logo)}" alt="${escapeHtml(name)}" onerror="this.outerHTML='<svg class=\\'i lg\\'><use href=\\'#i-layers\\'/></svg>'" />`;
