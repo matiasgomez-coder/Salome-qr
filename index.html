@@ -21,6 +21,7 @@
         --warn: #fbbf24;
         --warn-soft: #3a2a08;
         --danger: #f87171;
+        --danger-soft: #3a1515;
         --radius: 14px;
         --radius-sm: 10px;
         --nav-w: 248px;
@@ -34,47 +35,64 @@
 
       .i { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
       
-      .sidebar { position: fixed; inset: 0 auto 0 0; width: var(--nav-w); padding: 20px 14px; display: flex; flex-direction: column; gap: 26px; border-right: 1px solid var(--line); background: var(--surface); }
+      .sidebar { position: fixed; inset: 0 auto 0 0; width: var(--nav-w); padding: 20px 14px; display: flex; flex-direction: column; gap: 26px; border-right: 1px solid var(--line); background: var(--surface); z-index: 10; }
       .brand { padding: 0 6px; display: flex; align-items: center; gap: 10px; }
       .brand-mark { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 12px; background: var(--primary); color: var(--on-primary); overflow: hidden; }
       .brand-copy strong { display: block; font-size: 16px; }
       .brand-copy small { color: var(--muted); font-size: 12px; }
 
       .side-nav { display: grid; gap: 4px; }
-      .nav-button { width: 100%; min-height: 44px; padding: 0 12px; display: flex; align-items: center; gap: 12px; border-radius: var(--radius-sm); color: var(--ink-2); font-weight: 600; }
+      .nav-button { width: 100%; min-height: 44px; padding: 0 12px; display: flex; align-items: center; gap: 12px; border-radius: var(--radius-sm); color: var(--ink-2); font-weight: 600; text-align: left; }
+      .nav-button:hover { background: var(--surface-2); color: var(--ink); }
       .nav-button[aria-current="page"] { background: var(--accent-soft); color: var(--accent-ink); }
 
       .shell { margin-left: var(--nav-w); }
       main { max-width: 1180px; margin: 0 auto; padding: 28px 32px; }
 
-      .topbar { margin-bottom: 24px; display: flex; align-items: flex-end; justify-content: space-between; }
+      .topbar { margin-bottom: 24px; display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
       .eyebrow { margin-bottom: 4px; color: var(--muted); font-size: 12px; font-weight: 700; text-transform: uppercase; }
       h1 { font-size: 28px; margin: 0; }
 
-      .button { min-height: 44px; padding: 0 16px; display: inline-flex; align-items: center; gap: 8px; border-radius: var(--radius-sm); font-weight: 600; }
+      .action-group { display: flex; gap: 8px; }
+      .button { min-height: 44px; padding: 0 16px; display: inline-flex; align-items: center; gap: 8px; border-radius: var(--radius-sm); font-weight: 600; justify-content: center; }
       .button.primary { background: var(--primary); color: var(--on-primary); }
       .button.secondary { border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+      .button.danger { background: var(--danger-soft); color: var(--danger); border: 1px solid var(--danger); }
 
-      .icon-button { width: 40px; height: 40px; display: inline-grid; place-items: center; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); color: var(--ink); }
+      .icon-button { width: 36px; height: 36px; display: inline-grid; place-items: center; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); color: var(--ink); }
+      .icon-button:hover { background: var(--surface-2); }
 
-      .panel { border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); overflow: hidden; }
+      .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px; }
+      .stat-card { border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); padding: 18px 20px; }
+      .stat-card p { margin: 0 0 6px 0; color: var(--muted); font-size: 13px; }
+      .stat-card h3 { margin: 0; font-size: 24px; }
+
+      .panel { border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); overflow: hidden; margin-bottom: 24px; }
       .table-wrap { overflow-x: auto; }
-      table { width: 100%; border-collapse: collapse; }
-      th { padding: 12px 16px; background: var(--surface-2); color: var(--muted); font-size: 12px; font-weight: 700; text-align: left; text-transform: uppercase; }
-      td { padding: 12px 16px; border-top: 1px solid var(--line); font-size: 14px; }
+      table { width: 100%; border-collapse: collapse; text-align: left; }
+      th { padding: 12px 16px; background: var(--surface-2); color: var(--muted); font-size: 12px; font-weight: 700; text-transform: uppercase; white-space: nowrap; }
+      td { padding: 12px 16px; border-top: 1px solid var(--line); font-size: 14px; vertical-align: middle; }
 
-      .code { padding: 4px 8px; border-radius: 6px; background: var(--surface-2); font-family: monospace; }
-      .pill { padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; }
+      .code { padding: 4px 8px; border-radius: 6px; background: var(--surface-2); font-family: monospace; font-size: 13px; }
+      .pill { padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; display: inline-block; }
       .pill.ok { background: var(--accent-soft); color: var(--accent-ink); }
       .pill.low { background: var(--warn-soft); color: var(--warn); }
+      .pill.in { background: var(--accent-soft); color: var(--accent-ink); }
+      .pill.out { background: var(--danger-soft); color: var(--danger); }
+
+      .view { display: none; }
+      .view.active { display: block; }
 
       dialog { width: min(calc(100% - 28px), 600px); padding: 0; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); color: var(--ink); }
-      dialog::backdrop { background: rgba(0, 0, 0, 0.7); }
-      .dialog-header { padding: 20px 24px; display: flex; justify-content: space-between; border-bottom: 1px solid var(--line); }
+      dialog::backdrop { background: rgba(0, 0, 0, 0.75); }
+      .dialog-header { padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); }
+      .dialog-header h2 { margin: 0; font-size: 20px; }
       .form-grid { padding: 20px 24px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
       .field { display: grid; gap: 6px; }
       .field.wide { grid-column: span 2; }
-      .field input { width: 100%; min-height: 44px; padding: 0 12px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--bg); color: var(--ink); }
+      .field span { font-size: 13px; color: var(--ink-2); font-weight: 600; }
+      .field input, .field select, .field textarea { width: 100%; min-height: 44px; padding: 0 12px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--bg); color: var(--ink); }
+      .field textarea { padding: 10px 12px; resize: vertical; min-height: 80px; }
       .dialog-actions { padding: 16px 24px; display: flex; justify-content: flex-end; gap: 8px; border-top: 1px solid var(--line); }
     </style>
   </head>
@@ -86,57 +104,138 @@
           <svg class="i"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 13 9 5 9-5"/></svg>
         </span>
         <span class="brand-copy">
-          <strong>SALOME</strong>
+          <strong id="brand-title">SALOME</strong>
           <small>CRM</small>
         </span>
       </div>
       <nav class="side-nav">
-        <button class="nav-button" aria-current="page">Productos</button>
+        <button class="nav-button" data-view="products" aria-current="page">📦 Productos</button>
+        <button class="nav-button" data-view="movements">🔄 Movimientos</button>
+        <button class="nav-button" data-view="suppliers">🚚 Proveedores</button>
       </nav>
     </aside>
 
     <div class="shell">
       <main>
-        <div class="topbar">
-          <div>
-            <p class="eyebrow">Gestión de Ropa</p>
-            <h1>Prendas</h1>
+        <!-- VISTA PRODUCTOS -->
+        <section id="view-products" class="view active">
+          <div class="topbar">
+            <div>
+              <p class="eyebrow">Gestión de Ropa</p>
+              <h1>Prendas</h1>
+            </div>
+            <div class="action-group">
+              <button class="button secondary" id="btn-movement">+ Movimiento</button>
+              <button class="button primary" id="add-product">+ Agregar prenda</button>
+            </div>
           </div>
-          <button class="button primary" id="add-product">+ Agregar prenda</button>
-        </div>
 
-        <article class="panel">
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Prenda</th>
-                  <th>Código</th>
-                  <th>Categoría</th>
-                  <th>Talle</th>
-                  <th>Precio</th>
-                  <th>Costo</th>
-                  <th>Stock</th>
-                  <th>Estado</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody id="products-body"></tbody>
-            </table>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <p>Productos Activos</p>
+              <h3 id="stat-products">0</h3>
+            </div>
+            <div class="stat-card">
+              <p>Stock Total</p>
+              <h3 id="stat-units">0</h3>
+            </div>
+            <div class="stat-card">
+              <p>Stock Bajo</p>
+              <h3 id="stat-low">0</h3>
+            </div>
           </div>
-        </article>
+
+          <article class="panel">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Prenda</th>
+                    <th>Código</th>
+                    <th>Categoría</th>
+                    <th>Talle</th>
+                    <th>Precio</th>
+                    <th>Costo</th>
+                    <th>Stock</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="products-body"></tbody>
+              </table>
+            </div>
+          </article>
+        </section>
+
+        <!-- VISTA MOVIMIENTOS -->
+        <section id="view-movements" class="view">
+          <div class="topbar">
+            <div>
+              <p class="eyebrow">Historial</p>
+              <h1>Movimientos de Stock</h1>
+            </div>
+            <button class="button primary" onclick="document.getElementById('btn-movement').click()">+ Nuevo movimiento</button>
+          </div>
+
+          <article class="panel">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Fecha</th>
+                    <th>Tipo</th>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Anterior</th>
+                    <th>Nuevo</th>
+                    <th>Nota</th>
+                  </tr>
+                </thead>
+                <tbody id="movements-body"></tbody>
+              </table>
+            </div>
+          </article>
+        </section>
+
+        <!-- VISTA PROVEEDORES -->
+        <section id="view-suppliers" class="view">
+          <div class="topbar">
+            <div>
+              <p class="eyebrow">Proveedores</p>
+              <h1>Contactos</h1>
+            </div>
+            <button class="button primary" id="add-supplier">+ Agregar proveedor</button>
+          </div>
+
+          <article class="panel">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Contacto</th>
+                    <th>Teléfono</th>
+                    <th>Email</th>
+                    <th>Notas</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="suppliers-body"></tbody>
+              </table>
+            </div>
+          </article>
+        </section>
       </main>
     </div>
 
+    <!-- DIALOG PRODUCTO -->
     <dialog id="product-dialog">
       <form id="product-form">
         <header class="dialog-header">
           <h2 id="product-dialog-title">Agregar prenda</h2>
           <button type="button" onclick="document.getElementById('product-dialog').close()">✕</button>
         </header>
-
         <input type="hidden" name="id" />
-
         <div class="form-grid">
           <label class="field wide">
             <span>Nombre de la prenda</span>
@@ -155,6 +254,12 @@
             <input name="categoria" placeholder="Ej. Pantalones" />
           </label>
           <label class="field">
+            <span>Proveedor</span>
+            <select name="proveedorId" id="product-supplier-select">
+              <option value="">Sin proveedor</option>
+            </select>
+          </label>
+          <label class="field">
             <span>Precio de venta ($)</span>
             <input name="precio" type="number" step="0.01" value="0" />
           </label>
@@ -171,7 +276,6 @@
             <input name="stockMinimo" type="number" value="0" />
           </label>
         </div>
-
         <footer class="dialog-actions">
           <button class="button secondary" type="button" onclick="document.getElementById('product-dialog').close()">Cancelar</button>
           <button class="button primary" type="submit">Guardar prenda</button>
@@ -179,29 +283,142 @@
       </form>
     </dialog>
 
-    <script>
-      /* PEGÁ AQUÍ TU URL DE GOOGLE APPS SCRIPT: */
-      const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwNqAO4lhDvSHrp9k_V0g8EqhNMSGeIfKPdz9qJkI7V150Ro8p6CXy3BUgxHa5-cHI/exec";
-      const PIN = "123456"; // Tu ACCESS_PIN asignado en Configuracion
+    <!-- DIALOG MOVIMIENTO -->
+    <dialog id="movement-dialog">
+      <form id="movement-form">
+        <header class="dialog-header">
+          <h2>Registrar Movimiento</h2>
+          <button type="button" onclick="document.getElementById('movement-dialog').close()">✕</button>
+        </header>
+        <div class="form-grid">
+          <label class="field wide">
+            <span>Producto</span>
+            <select name="productoId" id="movement-product-select" required></select>
+          </label>
+          <label class="field">
+            <span>Tipo de movimiento</span>
+            <select name="tipo" required>
+              <option value="Entrada">Entrada (Ingreso)</option>
+              <option value="Salida">Salida (Venta/Baja)</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Cantidad</span>
+            <input name="cantidad" type="number" min="1" value="1" required />
+          </label>
+          <label class="field wide">
+            <span>Nota / Motivo</span>
+            <input name="nota" placeholder="Ej. Venta en local, Reposición..." />
+          </label>
+        </div>
+        <footer class="dialog-actions">
+          <button class="button secondary" type="button" onclick="document.getElementById('movement-dialog').close()">Cancelar</button>
+          <button class="button primary" type="submit">Registrar</button>
+        </footer>
+      </form>
+    </dialog>
 
-      let state = { products: [] };
+    <!-- DIALOG PROVEEDOR -->
+    <dialog id="supplier-dialog">
+      <form id="supplier-form">
+        <header class="dialog-header">
+          <h2 id="supplier-dialog-title">Agregar Proveedor</h2>
+          <button type="button" onclick="document.getElementById('supplier-dialog').close()">✕</button>
+        </header>
+        <input type="hidden" name="id" />
+        <div class="form-grid">
+          <label class="field wide">
+            <span>Nombre del proveedor / Empresa</span>
+            <input name="nombre" required placeholder="Ej. Distribuidora Moda" />
+          </label>
+          <label class="field">
+            <span>Contacto</span>
+            <input name="contacto" placeholder="Nombre de contacto" />
+          </label>
+          <label class="field">
+            <span>Teléfono</span>
+            <input name="telefono" placeholder="Ej. +54 9..." />
+          </label>
+          <label class="field wide">
+            <span>Email</span>
+            <input name="email" type="email" placeholder="correo@ejemplo.com" />
+          </label>
+          <label class="field wide">
+            <span>Notas</span>
+            <textarea name="notas" placeholder="Observaciones adicionales..."></textarea>
+          </label>
+        </div>
+        <footer class="dialog-actions">
+          <button class="button secondary" type="button" onclick="document.getElementById('supplier-dialog').close()">Cancelar</button>
+          <button class="button primary" type="submit">Guardar</button>
+        </footer>
+      </form>
+    </dialog>
+
+    <script>
+      /* COLOCÁ AQUÍ TU URL DE GOOGLE APPS SCRIPT: */
+      const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwNqAO4lhDvSHrp9k_V0g8EqhNMSGeIfKPdz9qJkI7V150Ro8p6CXy3BUgxHa5-cHI/exec";
+      const PIN = "123456";
+
+      let state = { products: [], suppliers: [], movements: [], summary: {} };
 
       const $ = s => document.querySelector(s);
+      const $$ = s => document.querySelectorAll(s);        // Navegación entre vistas       $$(".nav-button").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const view = btn.dataset.view;
+          if (!view) return;
+          $$(".nav-button").forEach(b => b.removeAttribute("aria-current"));           btn.setAttribute("aria-current", "page");           $$
+(".view").forEach(v => v.classList.remove("active"));
+          $(`#view-${view}`).classList.add("active");
+        });
+      });
 
-      async function loadData() {
+      async function api(action, payload = {}) {
         try {
           const res = await fetch(SCRIPT_URL, {
             method: "POST",
-            body: JSON.stringify({ action: "bootstrap", pin: PIN })
+            body: JSON.stringify({ action, pin: PIN, ...payload })
           });
           const json = await res.json();
-          if (json.ok) {
-            state.products = json.data.products || [];
-            renderProducts();
-          }
+          if (!json.ok) throw new Error(json.error || "Error de conexión");
+          return json.data;
         } catch (e) {
-          console.error("Error al cargar prendas", e);
+          alert("Error: " + e.message);
+          throw e;
         }
+      }
+
+      async function loadData() {
+        try {
+          const data = await api("bootstrap");
+          state = {
+            products: data.products || [],
+            suppliers: data.suppliers || [],
+            movements: data.movements || [],
+            summary: data.summary || {}
+          };
+
+          if (data.settings && data.settings.businessName) {
+            $("#brand-title").textContent = data.settings.businessName;
+          }
+
+          render();
+        } catch (e) {
+          console.error("Error al cargar datos", e);
+        }
+      }
+
+      function render() {
+        renderProducts();
+        renderMovements();
+        renderSuppliers();
+        renderStats();
+      }
+
+      function renderStats() {
+        $("#stat-products").textContent = state.summary.productCount || state.products.length;
+        $("#stat-units").textContent = state.summary.totalUnits || 0;
+        $("#stat-low").textContent = state.summary.lowStockCount || 0;
       }
 
       function renderProducts() {
@@ -218,13 +435,64 @@
               <td>$ ${Number(p.costo || 0).toLocaleString("es-AR")}</td>
               <td><strong>${p.stock || 0}</strong> / mín. ${p.stockMinimo || 0}</td>
               <td><span class="pill ${isLow ? 'low' : 'ok'}">${isLow ? 'Stock bajo' : 'Disponible'}</span></td>
-              <td><button class="icon-button" onclick="editProduct('${p.id}')">✏️</button></td>
+              <td>
+                <button class="icon-button" onclick="editProduct('${p.id}')">✏️</button>
+                <button class="icon-button" onclick="archiveProduct('${p.id}')">🗑️</button>
+              </td>
+            </tr>
+          `;
+        }).join("");
+
+        // Cargar selects de modales
+        const prodSelect = $("#movement-product-select");
+        prodSelect.innerHTML = state.products.map(p => 
+          `<option value="${p.id}">${p.nombre} ${p.talle ? '(' + p.talle + ')' : ''} — Stock: ${p.stock}</option>`
+        ).join("");
+
+        const suppSelect = $("#product-supplier-select");
+        suppSelect.innerHTML = '<option value="">Sin proveedor</option>' + state.suppliers.map(s => 
+          `<option value="${s.id}">${s.nombre}</option>`
+        ).join("");
+      }
+
+      function renderMovements() {
+        const tbody = $("#movements-body");
+        tbody.innerHTML = state.movements.map(m => {
+          const isEntry = m.tipo === "Entrada";
+          const dateStr = m.fecha ? new Date(m.fecha).toLocaleString("es-AR") : "—";
+          return `
+            <tr>
+              <td>${dateStr}</td>
+              <td><span class="pill ${isEntry ? 'in' : 'out'}">${m.tipo}</span></td>
+              <td><strong>${m.producto || "—"}</strong></td>
+              <td><strong>${m.cantidad}</strong></td>
+              <td>${m.stockAnterior}</td>
+              <td>${m.stockNuevo}</td>
+              <td>${m.nota || "—"}</td>
             </tr>
           `;
         }).join("");
       }
 
-      function openModal(p = null) {
+      function renderSuppliers() {
+        const tbody = $("#suppliers-body");
+        tbody.innerHTML = state.suppliers.map(s => `
+          <tr>
+            <td><strong>${s.nombre || "—"}</strong></td>
+            <td>${s.contacto || "—"}</td>
+            <td>${s.telefono || "—"}</td>
+            <td>${s.email || "—"}</td>
+            <td>${s.notas || "—"}</td>
+            <td>
+              <button class="icon-button" onclick="editSupplier('${s.id}')">✏️</button>
+              <button class="icon-button" onclick="archiveSupplier('${s.id}')">🗑️</button>
+            </td>
+          </tr>
+        `).join("");
+      }
+
+      // MODAL PRODUCTO
+      function openProductModal(p = null) {
         const f = $("#product-form");
         f.reset();
         $("#product-dialog-title").textContent = p ? "Editar prenda" : "Agregar prenda";
@@ -234,6 +502,7 @@
           f.elements.codigo.value = p.codigo || "";
           f.elements.talle.value = p.talle || "";
           f.elements.categoria.value = p.categoria || "";
+          f.elements.proveedorId.value = p.proveedorId || "";
           f.elements.precio.value = p.precio || 0;
           f.elements.costo.value = p.costo || 0;
           f.elements.stock.value = p.stock || 0;
@@ -244,36 +513,105 @@
 
       window.editProduct = id => {
         const p = state.products.find(x => x.id === id);
-        if (p) openModal(p);
+        if (p) openProductModal(p);
       };
 
-      $("#add-product").addEventListener("click", () => openModal());
+      window.archiveProduct = async id => {
+        if (confirm("¿Estás seguro de que querés archivar este producto?")) {
+          await api("archiveProduct", { id });
+          await loadData();
+        }
+      };
+
+      $("#add-product").addEventListener("click", () => openProductModal());
 
       $("#product-form").addEventListener("submit", async e => {
         e.preventDefault();
         const f = e.target;
-        const payload = {
+        const product = {
           id: f.elements.id.value,
           nombre: f.elements.nombre.value,
           codigo: f.elements.codigo.value,
           talle: f.elements.talle.value,
           categoria: f.elements.categoria.value,
+          proveedorId: f.elements.proveedorId.value,
           precio: Number(f.elements.precio.value),
           costo: Number(f.elements.costo.value),
           stock: Number(f.elements.stock.value),
           stockMinimo: Number(f.elements.stockMinimo.value)
         };
 
-        try {
-          await fetch(SCRIPT_URL, {
-            method: "POST",
-            body: JSON.stringify({ action: "saveProduct", pin: PIN, product: payload })
-          });
-          $("#product-dialog").close();
-          await loadData();
-        } catch (err) {
-          alert("Ocurrió un error al guardar la prenda.");
+        await api("saveProduct", { product });
+        $("#product-dialog").close();
+        await loadData();
+      });
+
+      // MODAL MOVIMIENTO
+      $("#btn-movement").addEventListener("click", () => {
+        $("#movement-form").reset();
+        $("#movement-dialog").showModal();
+      });
+
+      $("#movement-form").addEventListener("submit", async e => {
+        e.preventDefault();
+        const f = e.target;
+        const movement = {
+          productoId: f.elements.productoId.value,
+          tipo: f.elements.tipo.value,
+          cantidad: Number(f.elements.cantidad.value),
+          nota: f.elements.nota.value
+        };
+
+        await api("movement", { movement });
+        $("#movement-dialog").close();
+        await loadData();
+      });
+
+      // MODAL PROVEEDOR
+      function openSupplierModal(s = null) {
+        const f = $("#supplier-form");
+        f.reset();
+        $("#supplier-dialog-title").textContent = s ? "Editar Proveedor" : "Agregar Proveedor";
+        if (s) {
+          f.elements.id.value = s.id || "";
+          f.elements.nombre.value = s.nombre || "";
+          f.elements.contacto.value = s.contacto || "";
+          f.elements.telefono.value = s.telefono || "";
+          f.elements.email.value = s.email || "";
+          f.elements.notas.value = s.notas || "";
         }
+        $("#supplier-dialog").showModal();
+      }
+
+      window.editSupplier = id => {
+        const s = state.suppliers.find(x => x.id === id);
+        if (s) openSupplierModal(s);
+      };
+
+      window.archiveSupplier = async id => {
+        if (confirm("¿Estás seguro de que querés borrar este proveedor?")) {
+          await api("archiveSupplier", { id });
+          await loadData();
+        }
+      };
+
+      $("#add-supplier").addEventListener("click", () => openSupplierModal());
+
+      $("#supplier-form").addEventListener("submit", async e => {
+        e.preventDefault();
+        const f = e.target;
+        const supplier = {
+          id: f.elements.id.value,
+          nombre: f.elements.nombre.value,
+          contacto: f.elements.contacto.value,
+          telefono: f.elements.telefono.value,
+          email: f.elements.email.value,
+          notas: f.elements.notas.value
+        };
+
+        await api("saveSupplier", { supplier });
+        $("#supplier-dialog").close();
+        await loadData();
       });
 
       loadData();
